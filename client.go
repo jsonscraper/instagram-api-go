@@ -1,4 +1,4 @@
-// Package jsonscraper provides Instagram and TikTok API clients.
+// Package jsonscraper provides Instagram Scraper API clients.
 package jsonscraper
 
 import (
