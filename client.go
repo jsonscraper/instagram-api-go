@@ -22,11 +22,10 @@ type Client struct { key string; baseURL string; retries int; cacheTimeout *int;
 type Response struct { Status int; Header http.Header; Body []byte }
 // Decode preserves JSON numbers; decode IDs into strings or json.Number, not float64.
 func (r *Response) Decode(v any) error { d:=json.NewDecoder(strings.NewReader(string(r.Body)));d.UseNumber();return d.Decode(v) }
-func New(licenseKey, product string, options Options) (*Client,error) {
+func New(licenseKey string, options Options) (*Client,error) {
  base:=options.BaseURL
- if product!="instagram" && product!="tiktok" {return nil,errors.New("unknown product")}
  if strings.TrimSpace(licenseKey)=="" {return nil,errors.New("a license key is required")}
- if base=="" {if product=="instagram" {base="https://ig.jsonscraper.com"} else {base="https://tiktok.evelode.com"}}
+ if base=="" {base="https://ig.jsonscraper.com"}
  u,err:=url.Parse(base)
  if err!=nil || u.Host=="" || u.User!=nil || u.RawQuery!="" || u.Fragment!="" || (u.Scheme!="https" && !(u.Scheme=="http" && (u.Hostname()=="localhost" || u.Hostname()=="127.0.0.1" || u.Hostname()=="::1"))) {return nil,errors.New("use an HTTPS base URL")}
  if options.Retries<0 || options.Retries>5 || options.Timeout<0 {return nil,errors.New("invalid timeout or retries")}
